@@ -2,26 +2,19 @@
   <div>
     <v-form :model="user">
       <v-text-field
+        @focus="resetCurrentIndex"
         label="First Name"
         @keydown.enter="focusNext"
-        data-index="0"
         ref="input-0"
         v-model="user.first_name"
       >
       </v-text-field>
 
-      <v-text-field
-        data-index="1"
-        ref="input-1"
-        label="Last Name"
-        v-model="user.last_name"
-        @keydown.enter="focusNext"
-      >
+      <v-text-field ref="input-1" label="Last Name" v-model="user.last_name" @keydown.enter="focusNext">
       </v-text-field>
 
       <v-select
         :items="cities"
-        data-index="2"
         ref="input-2"
         attach
         item-text="name"
@@ -31,13 +24,7 @@
       >
       </v-select>
 
-      <v-text-field
-        data-index="2"
-        ref="input-2"
-        label="Phone Number"
-        v-model="user.phone_number"
-        @keydown.enter="focusNext"
-      >
+      <v-text-field ref="input-3" label="Phone Number" v-model="user.phone_number" @keydown.enter="focusNext">
       </v-text-field>
     </v-form>
   </div>
@@ -45,45 +32,35 @@
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       user: {
-        first_name: "",
-        last_name: "",
+        first_name: '',
+        last_name: '',
         city: [],
-        phone_number: "",
+        phone_number: '',
       },
-      cities: ["a", "b", "c"],
-    };
+      cities: ['tokyo', 'berlin', 'nairobi'],
+      currentIndex: 0,
+    }
   },
   methods: {
+    resetCurrentIndex() {
+      this.currentIndex = 0
+    },
     focusNext(event) {
-      console.log("event", event);
-      if (event.target) {
-        const nextElement = this.$refs?.[
-          `input-${Number(event.target.dataset.index) + 1}`
-        ];
-        if (nextElement) nextElement.focus();
-      }
+      console.log('event', event)
+      this.currentIndex += 1
+      const nextElement = this.$refs[`input-${this.currentIndex}`]
+      if (nextElement) nextElement.focus()
     },
   },
   watch: {
-    "user.city"(newValue) {
-      console.log("changed", newValue);
-      this.focusNext();
+    'user.city'(newValue) {
+      console.log('changed', newValue)
+      this.focusNext()
     },
   },
-};
-</script>
-
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
-</style>
+</script>
