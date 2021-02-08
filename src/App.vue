@@ -53,7 +53,14 @@ export default {
       console.log('event', event)
       this.currentIndex += 1
       const nextElement = this.$refs[`input-${this.currentIndex}`]
-      if (nextElement) nextElement.focus()
+      if (nextElement) {
+        if (this.currentIndex === 2) {
+          console.log(nextElement.$el)
+          nextElement.$el.querySelector("[role='button']").click()
+        } else {
+          nextElement.focus()
+        }
+      }
     },
   },
   watch: {
